@@ -12,18 +12,12 @@ class AvaliadroTest extends TestCase
     {
 
         // Arruma - Given
-        $leilao = new Leilao('Fusca 89');
-
-        $maria = new Usuario("Maria");
-        $jose = new Usuario("José");
-
-        $leilao->recebeLance(new Lance($maria, 4000));
-        $leilao->recebeLance(new Lance($jose, 5000));
+       
 
         $leiloeiro = new Avaliador();
 
         // Executa - When
-        $leiloeiro->avalia($leilao);
+        $leiloeiro->avalia($this->leilaoEmOrdemCrescente());
 
         $maiorValor = $leiloeiro->getMaiorValor();
 
@@ -127,5 +121,18 @@ class AvaliadroTest extends TestCase
         self::assertEquals(4500, $maioresLances[0]->getValor());
         self::assertEquals(4000, $maioresLances[1]->getValor());
         self::assertEquals(3500, $maioresLances[2]->getValor());
+    }
+
+    public function leilaoEmOrdemCrescente() 
+    {
+        $leilao = new Leilao('Fusca 89');
+
+        $maria = new Usuario("Maria");
+        $jose = new Usuario("José");
+
+        $leilao->recebeLance(new Lance($maria, 4000));
+        $leilao->recebeLance(new Lance($jose, 5000));
+
+        return $leilao;
     }
 }
