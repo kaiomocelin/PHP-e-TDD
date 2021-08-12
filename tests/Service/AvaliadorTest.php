@@ -68,7 +68,7 @@ class AvaliadorTest extends TestCase
     {
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage("Não é possível avaliar leilão vazio");
-        
+
         $leilao = new Leilao("Fusca 1982");
         $this->leiloeiro->avalia($leilao);
     }
@@ -91,6 +91,20 @@ class AvaliadorTest extends TestCase
         ];
     }
 
+    public function testLeilaoFinalizadoNaoPodeSerAvaliado()
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage("Leilão já finalizado.");
+        
+        $leilao = new Leilao("Opala 1989");
+        $joao = new Usuario("João");
+        $leilao->recebeLance(new Lance($joao, 2000));
+        $leilao->finaliza();
+
+        $this->leiloeiro->avalia($leilao);
+    }
+
+    /* -------- DADOS -------- */
     public function leilaoEmOrdemDecrescente()
     {
         $leilao = new Leilao('Fusca 89');
