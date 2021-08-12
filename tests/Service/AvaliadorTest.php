@@ -64,6 +64,15 @@ class AvaliadorTest extends TestCase
         self::assertEquals(4000, $maioresLances[2]->getValor());
     }
 
+    public function testLeilaoSemLances()
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage("Não é possível avaliar leilão vazio");
+        
+        $leilao = new Leilao("Fusca 1982");
+        $this->leiloeiro->avalia($leilao);
+    }
+
     public function leilaoEmOrdemCrescente()
     {
         $leilao = new Leilao('Fusca 89');
@@ -108,10 +117,10 @@ class AvaliadorTest extends TestCase
         $jose = new Usuario("José");
         $ana = new Usuario("Ana");
 
-        $leilao->recebeLance(new Lance($jose, 5000));
         $leilao->recebeLance(new Lance($ana, 4500));
-        $leilao->recebeLance(new Lance($ana, 3000));
         $leilao->recebeLance(new Lance($maria, 4000));
+        $leilao->recebeLance(new Lance($jose, 5000));
+        $leilao->recebeLance(new Lance($ana, 3000));
 
         return [
             'ordem-aleatoria' => [$leilao]
